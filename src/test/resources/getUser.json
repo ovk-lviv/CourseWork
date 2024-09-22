@@ -1,0 +1,8 @@
+{
+  "jsonrpc": "2.0",
+  "method": "getUserByName",
+  "id": 1769674782,
+  "params": {
+    "username": "user001"
+  }
+}
