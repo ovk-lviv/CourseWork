@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="API Tests">
+    <test name="API tests">
+        <classes>
+            <class name="api.MainAPITest">
+                <methods>
+                    <include name="createUser"/>
+                    <include name="createProject"/>
+                    <include name="createTask"/>
+                    <include name="removeUser"/>
+                    <include name="removeProject"/>
+                    <include name="removeTask"/>
+
+                </methods>
+            </class>
+
+        </classes>
+    </test>
+
+</suite>

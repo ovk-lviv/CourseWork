@@ -1,9 +1,0 @@
-{
-  "jsonrpc": "2.0",
-  "method": "createUser",
-  "id": 1518863034,
-  "params": {
-    "username": "user001",
-    "password": "123456"
-  }
-}

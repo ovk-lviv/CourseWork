@@ -3,11 +3,14 @@ package org.ui;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
+
+import java.util.List;
 
 public class Application {
     private String createdUserUsername = "user002";
@@ -129,7 +132,7 @@ public class Application {
 
     }
 
-    public void createProject(String u, String p) {
+    public Response createProject(String u, String p) {
         RequestSpecification requestSpecification;
         Response response;
 
@@ -139,16 +142,14 @@ public class Application {
         requestSpecification.auth().basic(u, p);
         requestSpecification.header("Accept", "application/json");
         requestSpecification.baseUri("http://127.0.0.1/jsonrpc.php");
-        response = requestSpecification.post();
-        String responseString = response.prettyPrint();
+        return requestSpecification.post();
 
 
     }
 
     public Response getAllUsers(String u, String p) {
         RequestSpecification requestSpecification;
-        String id = getProjectId(u,p);
-
+        String id = getProjectId(u, p);
         requestSpecification = RestAssured.given().log().all();
         requestSpecification.contentType(ContentType.JSON);
         requestSpecification.body(String.format("{\"jsonrpc\":\"2.0\",\"method\":\"getProjectUsers\",\"id\":1601016721,\"params\":[\"%s\"]}", id));
@@ -158,7 +159,82 @@ public class Application {
         return requestSpecification.post();
 
     }
+
+    public Response removeProject(String u, String p) {
+
+        String projectId = getProjectId(u, p);
+        RequestSpecification requestPost = RestAssured.given().log().all();
+        requestPost.auth().basic(u, p);
+        requestPost.contentType(ContentType.JSON);
+        requestPost.body(String.format("{\"jsonrpc\":\"2.0\",\"method\":\"removeProject\",\"id\":46285125,\"params\":{\"project_id\":\"%s\"}}", projectId));
+        requestPost.header("Accept", "application/json");
+        requestPost.baseUri("http://127.0.0.1/jsonrpc.php");
+        return requestPost.post();
+    }
+
+    public Response createTask(String u, String p) {
+        RequestSpecification requestSpecification;
+        String title = "Test Task";
+        String projectId = getProjectId(u, p);
+
+        requestSpecification = RestAssured.given().log().all();
+        requestSpecification.contentType(ContentType.JSON);
+        requestSpecification
+                .body(String.format("{\"jsonrpc\":\"2.0\",\"method\":\"createTask\",\"id\":1176509098,\"params\":{\"title\":\"%s\",\"project_id\": \"%s\"}}", title, projectId));
+        requestSpecification.auth().basic(u, p);
+        requestSpecification.header("Accept", "application/json");
+        requestSpecification.baseUri("http://127.0.0.1/jsonrpc.php");
+        return requestSpecification.post();
+
+    }
+
+    public String getTaskId(String u, String p, String id) {
+//        JsonNode child = null;
+        String taskId = "";
+        RequestSpecification requestSpecification = RestAssured.given().log().all();
+        requestSpecification.contentType(ContentType.JSON);
+        requestSpecification
+                .body(String.format("{\"jsonrpc\":\"2.0\",\"method\":\"getAllTasks\",\"id\":133280317,\"params\":{\"project_id\":\"%s\",\"status_id\":\"%s\"}}", id, 1));
+        requestSpecification.auth().basic(u, p);
+        requestSpecification.header("Accept", "application/json");
+        requestSpecification.baseUri("http://127.0.0.1/jsonrpc.php");
+        requestSpecification.post();
+
+        Response r1 = requestSpecification.post();
+        System.out.println(r1.asString());
+
+        try {
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode node = objectMapper.readValue(r1.asString(), JsonNode.class);
+            JsonNode array = node.get("result").get(0);
+            taskId = array.get("id").asText();
+//            JsonNode child = node.get(result).get("id");
+//            taskId= child.asText();
+
+//            taskId = jsonNode.path("result").path("id").asText();
+
+        } catch (JsonProcessingException e) {
+            e.getMessage();
+
+
+        }
+        return taskId;
+    }
+
+    public Response removeTask(String u, String p, String id) {
+
+        RequestSpecification requestPost = RestAssured.given().log().all();
+        requestPost.auth().basic(u, p);
+        requestPost.contentType(ContentType.JSON);
+        requestPost.body(String.format("{\"jsonrpc\":\"2.0\",\"method\":\"removeTask\",\"id\":1423501287,\"params\":{\"task_id\":\"%s\"}}", id));
+        requestPost.header("Accept", "application/json");
+        requestPost.baseUri("http://127.0.0.1/jsonrpc.php");
+        return requestPost.post();
+
+    }
 }
+
 
 
 

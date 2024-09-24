@@ -2,6 +2,7 @@ package org.ui;
 
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import static com.codeborne.selenide.Selenide.open;
@@ -12,6 +13,7 @@ public class BaseTest {
     private String usrname = "jsonrpc";
     private String pwd = "ba2f440e9674b545ee0f944cadfddf1a3bd9557d5a4b63cd7d7e045396cd";
 
+    @Parameters ("browser")
     @BeforeTest
     public void createUser() {
 

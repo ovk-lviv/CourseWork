@@ -63,11 +63,11 @@ public class MainTest extends  BaseTest {
         ProjectPage pp = mp.createProject(project);
         pp.clickCreateTask();
         pp.clickDashboard();
-        pp.getCreatedTask();
+        pp.clickTask();
         TaskPage tp = new TaskPage();
         tp.closeTask();
 
-        Assert.assertEquals(tp.getTaskSummary().text().trim(), "closed");
+        Assert.assertEquals(tp.getTaskSummaryValue().text().trim(), "closed");
 
 
     }
