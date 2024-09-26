@@ -1,38 +1,48 @@
-package org.example;
+package org.ui;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.WebDriverRunner;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.*;
 
-/**
- * Unit test for simple App.
- */
-public class AppTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
+import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Condition.*;
+
+public class BaseTest {
+    private String usrname = "jsonrpc";
+    private String pwd = "ba2f440e9674b545ee0f944cadfddf1a3bd9557d5a4b63cd7d7e045396cd";
+
+
+    @Parameters("browser")
+    @BeforeClass
+    public void setUp(String browser) {
+
+        if (browser.equalsIgnoreCase("firefox")) {
+            Configuration.browser = "firefox";
+
+        } else if (browser.equalsIgnoreCase("chrome")) {
+            Configuration.browser = "chrome";
+        } else if (browser.equalsIgnoreCase("headless")) {
+            Configuration.headless = true;
+        }
     }
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
+    @BeforeMethod
+    public void createUser() {
+        Application app = new Application();
+        app.createUser(usrname, pwd);
+
     }
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
+    @AfterMethod
+    public void removeUser() {
+        Application app = new Application();
+        app.getUserId(usrname, pwd);
+        app.removeUser(usrname, pwd);
     }
+
 }
