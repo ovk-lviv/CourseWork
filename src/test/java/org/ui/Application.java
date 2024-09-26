@@ -36,14 +36,6 @@ public class Application {
 
     public static void main(String[] args) {
         Application app = new Application();
-        System.out.println(app.createUser("jsonrpc", "ba2f440e9674b545ee0f944cadfddf1a3bd9557d5a4b63cd7d7e045396cd").asString());
-//        app.createProject("jsonrpc", "ba2f440e9674b545ee0f944cadfddf1a3bd9557d5a4b63cd7d7e045396cd");
-//        app.getUserId("jsonrpc", "ba2f440e9674b545ee0f944cadfddf1a3bd9557d5a4b63cd7d7e045396cd");
-//        app.linkUserToProject("jsonrpc", "ba2f440e9674b545ee0f944cadfddf1a3bd9557d5a4b63cd7d7e045396cd");
-//        System.out.println(app.removeUser("jsonrpc", "ba2f440e9674b545ee0f944cadfddf1a3bd9557d5a4b63cd7d7e045396cd").asString());
-//        System.out.println(app.getUserId("jsonrpc", "ba2f440e9674b545ee0f944cadfddf1a3bd9557d5a4b63cd7d7e045396cd"));
-//        app.getAllUsers("jsonrpc", "ba2f440e9674b545ee0f944cadfddf1a3bd9557d5a4b63cd7d7e045396cd");
-
     }
 
     public Response createUser(String u, String p) {
